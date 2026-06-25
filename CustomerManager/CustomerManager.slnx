@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/1 - Presentation/" />
+  <Folder Name="/2 - Application/">
+    <Project Path="../src/CustomerManager.Application/CustomerManager.Application.csproj" />
+  </Folder>
+  <Folder Name="/3 - Domain/">
+    <Project Path="../src/CustomerManager.Domain/CustomerManager.Domain.csproj" />
+  </Folder>
+  <Folder Name="/4 - Infra/">
+    <Project Path="../src/CustomerManager.Infra/CustomerManager.Infra.csproj" />
+  </Folder>
+  <Folder Name="/5 - CrossCutting/">
+    <Project Path="../src/CustomerManager.Ioc/CustomerManager.Ioc.csproj" Id="962b7090-9feb-4201-b318-1f0124fa0dae" />
+    <Project Path="CustomerManager.Shared/CustomerManager.Shared.csproj" Id="0aa358fb-e44b-42e1-8311-bb254448c0cb" />
+  </Folder>
+  <Folder Name="/6 -Tests/" />
+</Solution>
