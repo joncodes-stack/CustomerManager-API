@@ -1,5 +1,9 @@
 <Solution>
-  <Folder Name="/1 - Presentation/" />
+  <Folder Name="/1 - Presentation/">
+    <Project Path="src/CustomerManager.Api/CustomerManager.Api.csproj" />
+    <Project Path="src/CustomerManager.AppHost/CustomerManager.AppHost.AppHost/CustomerManager.AppHost.csproj" />
+    <Project Path="src/CustomerManager.AppHost/CustomerManager.AppHost.ServiceDefaults/CustomerManager.AppHost.ServiceDefaults.csproj" />
+  </Folder>
   <Folder Name="/2 - Application/">
     <Project Path="src/CustomerManager.Application/CustomerManager.Application.csproj" />
   </Folder>

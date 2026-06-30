@@ -1,17 +1,15 @@
-﻿using Amazon.SimpleNotificationService;
+using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
-using CustomerManager.Infra.Messaging.Event;
+using CustomerManager.Domain.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CustomerManager.Infra.Messaging
 {
-    public class CustomerEventPublisher
+    public class CustomerEventPublisher : ICustomerEventPublisher
     {
         private readonly IAmazonSimpleNotificationService _sns;
         private readonly string _topicArn;
@@ -22,7 +20,7 @@ namespace CustomerManager.Infra.Messaging
             _topicArn = config["AWS:SNS:ContaEventosTopicArn"];
         }
 
-        public async Task PublicarAsync(CustomerEvent evento)
+        public async Task PublicarAsync(CustomerEventMessage evento)
         {
             var mensagem = JsonSerializer.Serialize(evento);
 

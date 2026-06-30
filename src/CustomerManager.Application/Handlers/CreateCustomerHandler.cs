@@ -3,7 +3,7 @@ using CustomerManager.Application.Interfaces;
 using CustomerManager.Application.Responses;
 using CustomerManager.Domain.Entities;
 using CustomerManager.Domain.Interfaces.Repositories;
-using CustomerManager.Infra.Messaging.Event;
+using CustomerManager.Domain.Interfaces.Services;
 using CustomerManager.Shared.Exceptions;
 using Microsoft.Extensions.Logging;
 
@@ -37,11 +37,11 @@ namespace CustomerManager.Application.Handlers
             await _repository.SaveChangesAsync();
 
             // publica o evento após persistir com sucesso
-            await _eventPublisher.PublicarAsync(new CustomerEvent
+            await _eventPublisher.PublicarAsync(new CustomerEventMessage
             {
                 TipoEvento = "ContaCriada",
                 CustomerId = user.Id.ToString(),
-                OcorridoEm = DateTime.UtcNow
+                DataEvento = DateTime.UtcNow
             });
 
             return new CreateCustomerResponse(

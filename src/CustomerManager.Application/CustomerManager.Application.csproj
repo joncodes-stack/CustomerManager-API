@@ -1,20 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<TargetFramework>net8.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+	<PackageReference Include="FluentValidation" Version="12.1.1" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CustomerManager\CustomerManager.Shared\CustomerManager.Shared.csproj" />
-    <ProjectReference Include="..\CustomerManager.Domain\CustomerManager.Domain.csproj" />
-    <ProjectReference Include="..\CustomerManager.Infra\CustomerManager.Infra.csproj" />
+	<ProjectReference Include="..\CustomerManager.Shared\CustomerManager.Shared.csproj" />
+	<ProjectReference Include="..\CustomerManager.Domain\CustomerManager.Domain.csproj" />
+	<ProjectReference Include="..\CustomerManager.Infra\CustomerManager.Infra.csproj" />
   </ItemGroup>
 
 </Project>

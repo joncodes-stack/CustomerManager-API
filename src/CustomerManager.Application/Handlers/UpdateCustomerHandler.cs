@@ -3,7 +3,7 @@ using CustomerManager.Application.Commands;
 using CustomerManager.Application.Interfaces;
 using CustomerManager.Application.Responses;
 using CustomerManager.Domain.Interfaces.Repositories;
-using CustomerManager.Infra.Messaging.Event;
+using CustomerManager.Domain.Interfaces.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
@@ -45,11 +45,11 @@ namespace CustomerManager.Application.Handlers
                 await _cache.RemoveAsync($"customer:cpf:{user.Cpf}:{hoje}");
 
                 // publica o evento
-                await _eventPublisher.PublicarAsync(new CustomerEvent
+                await _eventPublisher.PublicarAsync(new CustomerEventMessage
                 {
                     TipoEvento = "ContaAtualizada",
                     CustomerId = user.Id.ToString(),
-                    OcorridoEm = DateTime.UtcNow
+                    DataEvento = DateTime.UtcNow
                 });
 
                 return new UpdateCustomerResponse(
