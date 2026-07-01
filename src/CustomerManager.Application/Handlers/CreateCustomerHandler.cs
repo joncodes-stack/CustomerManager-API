@@ -27,28 +27,28 @@ namespace CustomerManager.Application.Handlers
                 throw new AlreadyExistsException("Já existe um usuário com esse CPF");
             }
 
-            var user = new Customer(
+            var customer = new Customer(
                 command.CardHolderName,
                 command.Cpf,
                 true
             );
 
-            _repository.Add(user);
+            _repository.Add(customer);
             await _repository.SaveChangesAsync();
 
             // publica o evento após persistir com sucesso
             await _eventPublisher.PublicarAsync(new CustomerEventMessage
             {
                 TipoEvento = "ContaCriada",
-                CustomerId = user.Id.ToString(),
+                CustomerId = customer.Id.ToString(),
                 DataEvento = DateTime.UtcNow
             });
 
             return new CreateCustomerResponse(
-                user.Id,
-                user.CardHolderName,
-                user.Cpf,
-                user.Status
+                customer.Id,
+                customer.CardHolderName,
+                customer.Cpf,
+                customer.Status
             );
         }
     }

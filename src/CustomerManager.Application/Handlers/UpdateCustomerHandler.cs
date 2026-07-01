@@ -22,9 +22,9 @@ namespace CustomerManager.Application.Handlers
 
         public async Task<UpdateCustomerResponse> Handle(UpdateCustomerCommand command)
         {
-            var user = await _repository.GetByIdAsync(command.Id);
+            var customer = await _repository.GetByIdAsync(command.Id);
 
-            if (user == null)
+            if (customer == null)
             {
                 _logger.LogWarning("Update attempt failed: Customer with ID {Id} not found.", command.Id);
                 throw new NotFoundException($"Customer with ID {command.Id} not found.");
@@ -32,31 +32,31 @@ namespace CustomerManager.Application.Handlers
 
             try
             {
-                user.Atualizar(command.CardHolderName, command.Cpf);
+                customer.Atualizar(command.CardHolderName, command.Cpf);
 
-                _repository.Update(user);
+                _repository.Update(customer);
                 await _repository.SaveChangesAsync();
 
-                _logger.LogInformation("Customer {Id} updated successfully.", user.Id);
+                _logger.LogInformation("Customer {Id} updated successfully.", customer.Id);
 
                 // invalida o cache pois os dados mudaram
                 var hoje = DateTime.UtcNow.ToString("yyyy-MM-dd");
-                await _cache.RemoveAsync($"customer:id:{user.Id}:{hoje}");
-                await _cache.RemoveAsync($"customer:cpf:{user.Cpf}:{hoje}");
+                await _cache.RemoveAsync($"customer:id:{customer.Id}:{hoje}");
+                await _cache.RemoveAsync($"customer:cpf:{customer.Cpf}:{hoje}");
 
                 // publica o evento
                 await _eventPublisher.PublicarAsync(new CustomerEventMessage
                 {
                     TipoEvento = "ContaAtualizada",
-                    CustomerId = user.Id.ToString(),
+                    CustomerId = customer.Id.ToString(),
                     DataEvento = DateTime.UtcNow
                 });
 
                 return new UpdateCustomerResponse(
-                    user.Id,
-                    user.CardHolderName,
-                    user.Cpf,
-                    user.Status,
+                    customer.Id,
+                    customer.CardHolderName,
+                    customer.Cpf,
+                    customer.Status,
                     "Customer updated successfully!"
                 );
             }
