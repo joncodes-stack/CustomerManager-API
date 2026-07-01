@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CustomerManager.Application.Validators
 {
-    internal class GetAllCustomerValidator : AbstractValidator<GetAllCustomerQuery>
+    public class GetAllCustomerValidator : AbstractValidator<GetAllCustomerQuery>
     {
         public GetAllCustomerValidator()
         {

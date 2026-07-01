@@ -27,9 +27,10 @@ namespace CustomerManager.Ioc
 
             services.AddSingleton<IAmazonSimpleNotificationService>(_ =>
             {
+                var serviceUrl = configuration["AWS:SNS:ServiceUrl"] ?? "http://localhost:4566";
                 var config = new AmazonSimpleNotificationServiceConfig
                 {
-                    ServiceURL = "http://localhost:4566",
+                    ServiceURL = serviceUrl,
                     AuthenticationRegion = "us-east-1"
                 };
                 return new AmazonSimpleNotificationServiceClient(
@@ -50,6 +51,7 @@ namespace CustomerManager.Ioc
             // Handlers
             services.AddScoped<ICreateCustomerHandler, CreateCustomerHandler>();
             services.AddScoped<IGetAllCustomerHandler, GetAllCustomersHandler>();
+            services.AddScoped<IGetCustomerByIdHandler, GetCustomerByIdHandler>();
             services.AddScoped<IGetCustomerByCPFHandler, GetCustomerByCpfHandler>();
             services.AddScoped<IUpdateCustomerHandler, UpdateCustomerHandler>();
             services.AddScoped<IDeleteCustomerHandler, DeleteCustomerHandler>();

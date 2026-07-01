@@ -17,5 +17,7 @@
     <Project Path="src/CustomerManager.Ioc/CustomerManager.Ioc.csproj" />
     <Project Path="src/CustomerManager.Shared/CustomerManager.Shared.csproj" />
   </Folder>
-  <Folder Name="/6 -Tests/" />
+  <Folder Name="/6 -Tests/">
+    <Project Path="tests/CustomerManager.UnitTests/CustomerManager.UnitTests.csproj" Id="f5797135-a09d-416b-9bbc-a6b32ea515fd" />
+  </Folder>
 </Solution>

@@ -65,7 +65,7 @@ namespace CustomerManager.Api.Endpoints
         }
 
         private static async Task<IResult> GetAllCustomers(
-            [AsParameters] GetAllCustomerQuery query, [FromServices] GetAllCustomersHandler handler)
+            [AsParameters] GetAllCustomerQuery query, [FromServices] IGetAllCustomerHandler handler)
         {
             var result = await handler.Handle(query);
             return Results.Ok(result);
@@ -75,7 +75,7 @@ namespace CustomerManager.Api.Endpoints
             Guid id, [FromServices] IGetCustomerByIdHandler handler)
         {
             var result = await handler.Handle(new GetCustomerByIdQuery(id));
-            return Results.Ok(result);
+            return result is null ? Results.NotFound() : Results.Ok(result);
         }
 
         private static async Task<IResult> GetCustomerByCpf(

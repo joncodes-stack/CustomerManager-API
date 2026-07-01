@@ -24,7 +24,7 @@ namespace CustomerManager.Application.Handlers
 
             var customer = await _repository.GetByIdAsync(query.Id);
 
-            if (customer is null)
+            if (customer is null || !customer.Status)
                 return null;
 
             var response = new GetCustomerByIdResponse(

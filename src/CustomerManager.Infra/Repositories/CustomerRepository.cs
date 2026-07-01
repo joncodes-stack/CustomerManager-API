@@ -14,10 +14,10 @@ namespace CustomerManager.Infra.Repositories
     {
         public async Task<bool> ExistsByCpfAsync(string cpf)
         => await _context.Set<Customer>()
-            .AnyAsync(u => u.Cpf == cpf);
+            .AnyAsync(u => u.Cpf == cpf && u.Status == true);
 
         public async Task<Customer?> GetCustomerByCpfAsync(string cpf)
         => await _context.Set<Customer>()
-            .FirstOrDefaultAsync(u => u.Cpf == cpf);
+            .FirstOrDefaultAsync(u => u.Cpf == cpf && u.Status == true);
     }
 }

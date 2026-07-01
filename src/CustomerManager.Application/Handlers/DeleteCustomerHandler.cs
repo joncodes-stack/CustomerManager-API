@@ -4,6 +4,7 @@ using CustomerManager.Application.Interfaces;
 using CustomerManager.Application.Responses;
 using CustomerManager.Domain.Interfaces.Repositories;
 using CustomerManager.Domain.Interfaces.Services;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace CustomerManager.Application.Handlers
     public class DeleteCustomerHandler(
     ILogger<DeleteCustomerHandler> logger,
     ICustomerRepository repository,
-    ICustomerEventPublisher eventPublisher) : IDeleteCustomerHandler
+    ICustomerEventPublisher eventPublisher,
+    IDistributedCache cache) : IDeleteCustomerHandler
     {
         private readonly ILogger<DeleteCustomerHandler> _logger = logger;
         private readonly ICustomerRepository _repository = repository;
         private readonly ICustomerEventPublisher _eventPublisher = eventPublisher;
+        private readonly IDistributedCache _cache = cache;
 
         public async Task<DeleteCustomerResponse> Handle(DeleteCustomerCommand command)
         {
@@ -36,6 +39,11 @@ namespace CustomerManager.Application.Handlers
 
             _repository.Update(customer);
             await _repository.SaveChangesAsync();
+
+            // invalida o cache pois o cliente foi inativado
+            var hoje = DateTime.UtcNow.ToString("yyyy-MM-dd");
+            await _cache.RemoveAsync($"customer:id:{customer.Id}:{hoje}");
+            await _cache.RemoveAsync($"customer:cpf:{customer.Cpf}:{hoje}");
 
             // publica o evento após persistir com sucesso
             await _eventPublisher.PublicarAsync(new CustomerEventMessage

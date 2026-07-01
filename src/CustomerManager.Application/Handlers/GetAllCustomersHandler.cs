@@ -18,29 +18,29 @@ namespace CustomerManager.Application.Handlers
 
         public async Task<PagedResponse<GetAllCustomerResponse>> Handle(GetAllCustomerQuery query)
         {
-            Expression<Func<Customer, bool>> filtro = u => u.Status == !query.Ativos;
+            Expression<Func<Customer, bool>> filtro = u => u.Status == query.Ativos;
 
-            var totalUsers = await _repository.CountAsync(filtro);
+            var totalCustomers = await _repository.CountAsync(filtro);
             var customers = await _repository.GetPagedAsync(
                 query.Pagina,
                 query.TamanhoPagina,
                 filtro
             );
 
-            var listaUsersResponse = customers.Select(customer => new GetAllCustomerResponse(
+            var listaCustomersResponse = customers.Select(customer => new GetAllCustomerResponse(
                 customer.Id,
                 customer.CardHolderName,
                 customer.Cpf,
                 customer.Status
             ));
 
-            var totalPaginas = (int)Math.Ceiling(totalUsers / (double)query.TamanhoPagina);
+            var totalPaginas = (int)Math.Ceiling(totalCustomers / (double)query.TamanhoPagina);
 
             return new PagedResponse<GetAllCustomerResponse>(
-                listaUsersResponse,
+                listaCustomersResponse,
                 query.Pagina,
                 totalPaginas,
-                totalUsers
+                totalCustomers
             );
         }
     }

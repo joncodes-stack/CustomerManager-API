@@ -17,6 +17,7 @@ namespace CustomerManager.Domain.Entities
         {
             CardHolderName = cardHolderName;
             Cpf = cpf;
+            Status = status;
         }
 
         public void Inativar() => Status = false;
