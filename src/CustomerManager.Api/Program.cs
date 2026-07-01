@@ -1,4 +1,9 @@
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.SimpleNotificationService;
 using CustomerManager.Api.Extensions;
+using CustomerManager.Infra.Database;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 // Permite DateTime sem Kind (Unspecified) em colunas timestamp with time zone do PostgreSQL
@@ -22,8 +27,17 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .WriteTo.OpenTelemetry();
 });
 
+
+
 builder.Services.ConfigureServices(builder.Configuration);
 var app = builder.Build();
+
+// Roda migrations automaticamente ao subir
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CustomerContext>();
+    await db.Database.MigrateAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

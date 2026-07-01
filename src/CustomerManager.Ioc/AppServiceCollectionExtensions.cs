@@ -1,4 +1,5 @@
-﻿using CustomerManager.Application.Handlers;
+﻿using Amazon.SimpleNotificationService;
+using CustomerManager.Application.Handlers;
 using CustomerManager.Application.Interfaces;
 using CustomerManager.Application.Validators;
 using CustomerManager.Domain.Interfaces.Repositories;
@@ -24,9 +25,18 @@ namespace CustomerManager.Ioc
                 options.UseNpgsql(configuration.GetConnectionString("Default"),
                     npgsql => npgsql.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(10), errorCodesToAdd: null)));
 
-            // AWS SNS Configuration via AddAWSService (without using AWS configuration file reading that causes errors)
-            // This will use IAM credentials from environment or DefaultAWSCredentials chain
-            services.AddAWSService<Amazon.SimpleNotificationService.IAmazonSimpleNotificationService>();
+            services.AddSingleton<IAmazonSimpleNotificationService>(_ =>
+            {
+                var config = new AmazonSimpleNotificationServiceConfig
+                {
+                    ServiceURL = "http://localhost:4566",
+                    AuthenticationRegion = "us-east-1"
+                };
+                return new AmazonSimpleNotificationServiceClient(
+                    new Amazon.Runtime.BasicAWSCredentials("test", "test"),
+                    config
+                );
+            });
 
             // Distributed Cache (Redis)
             services.AddStackExchangeRedisCache(options =>
